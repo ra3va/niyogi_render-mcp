@@ -53,8 +53,8 @@ export interface RenderDeploy {
     message: string;
     createdAt: string;
   };
-  status: DeployStatus;
-  finishedAt: string;
+  status: DeployStatus | string;
+  finishedAt: string | null;
   createdAt: string;
   updatedAt: string;
 }

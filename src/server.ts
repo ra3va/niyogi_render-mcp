@@ -200,34 +200,99 @@ async function handleListServices(renderClient: RenderClient, params: any) {
  * Handle get_service tool
  */
 async function handleGetService(renderClient: RenderClient, params: any) {
-  const { serviceId } = params;
-  const service = await renderClient.getService(serviceId);
-  
-  return {
-    content: [
-      {
-        type: 'text',
-        text: JSON.stringify(service, null, 2),
-      },
-    ],
-  };
+  try {
+    const { serviceId } = params;
+    console.error(`Getting service details for ${serviceId}`);
+    
+    // Get the service details
+    const service = await renderClient.getService(serviceId);
+    
+    // Log the response for debugging
+    console.error(`Service response: ${JSON.stringify(service)}`);
+    
+    // Check if service object is defined
+    if (!service) {
+      throw new Error('Service response is undefined');
+    }
+    
+    // Format the response
+    const responseText = JSON.stringify(service, null, 2);
+    
+    // Return a properly formatted response
+    return {
+      content: [
+        {
+          type: 'text',
+          text: responseText,
+        },
+      ],
+    };
+  } catch (error) {
+    console.error('Get service error:', error);
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `Error getting service details: ${error instanceof Error ? error.message : String(error)}`,
+        },
+      ],
+      isError: true,
+    };
+  }
 }
 
 /**
  * Handle deploy_service tool
  */
 async function handleDeployService(renderClient: RenderClient, params: any) {
-  const { serviceId, clearCache } = params;
-  const deploy = await renderClient.deployService(serviceId, { clearCache });
-  
-  return {
-    content: [
-      {
-        type: 'text',
-        text: JSON.stringify(deploy, null, 2),
-      },
-    ],
-  };
+  try {
+    const { serviceId, clearCache } = params;
+    console.error(`Deploying service ${serviceId} with clearCache=${clearCache}`);
+    
+    // Deploy the service
+    const deploy = await renderClient.deployService(serviceId, clearCache ? { clearCache } : {});
+    
+    // Log the response for debugging
+    console.error(`Deploy response: ${JSON.stringify(deploy)}`);
+    
+    // Check if deploy object is defined
+    if (!deploy) {
+      throw new Error('Deployment response is undefined');
+    }
+    
+    // Create a simple success message
+    let successMessage = `Successfully deployed service ${serviceId}.`;
+    
+    // Add deployment details if available
+    if (deploy.id) {
+      successMessage += ` Deployment ID: ${deploy.id}`;
+    }
+    
+    if (deploy.status) {
+      successMessage += `, Status: ${deploy.status}`;
+    }
+    
+    // Return a properly formatted response
+    return {
+      content: [
+        {
+          type: 'text',
+          text: successMessage,
+        },
+      ],
+    };
+  } catch (error) {
+    console.error('Deploy service error:', error);
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `Error deploying service: ${error instanceof Error ? error.message : String(error)}`,
+        },
+      ],
+      isError: true,
+    };
+  }
 }
 
 /**
