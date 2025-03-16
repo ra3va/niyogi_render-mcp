@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "Render.com MCP server for AI assistants",
   "main": "dist/index.js",
+  "type": "module",
   "bin": {
     "render-mcp": "./bin/render-mcp.js"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tsc",

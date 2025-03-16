@@ -27,28 +27,35 @@ npm install -g @niyogi/render-mcp
 2. Configure the MCP server with your key:
 
 ```bash
-render-mcp configure --api-key=YOUR_API_KEY
+node bin/render-mcp.js configure --api-key=YOUR_API_KEY
 ```
 
-Alternatively, you can run `render-mcp configure` without the `--api-key` flag to be prompted for your API key.
+Alternatively, you can run `node bin/render-mcp.js configure` without the `--api-key` flag to be prompted for your API key.
 
 ## Usage
 
 ### Starting the Server
 
 ```bash
-render-mcp start
+node bin/render-mcp.js start
 ```
 
 ### Checking Configuration
 
 ```bash
-render-mcp config
+node bin/render-mcp.js config
 ```
 
 ### Running Diagnostics
 
 ```bash
+node bin/render-mcp.js doctor
+```
+
+Note: If you've installed the package globally, you can also use the shorter commands:
+```bash
+render-mcp start
+render-mcp config
 render-mcp doctor
 ```
 
@@ -61,8 +68,8 @@ render-mcp doctor
    {
      "mcpServers": {
        "render": {
-         "command": "render-mcp",
-         "args": ["start"],
+         "command": "node",
+         "args": ["/path/to/render-mcp/bin/render-mcp.js", "start"],
          "env": {
            "RENDER_API_KEY": "your-render-api-key"
          },
@@ -88,19 +95,19 @@ render-mcp doctor
 
 2. Configure your API key:
    ```bash
-   render-mcp configure --api-key=YOUR_API_KEY
+   node bin/render-mcp.js configure --api-key=YOUR_API_KEY
    ```
 
 3. Start the MCP server in a separate terminal:
    ```bash
-   render-mcp start
+   node bin/render-mcp.js start
    ```
 
 4. In Windsurf/Cursor settings, add the Render MCP server:
    - Server Name: render
    - Server Type: stdio
-   - Command: render-mcp
-   - Arguments: start
+   - Command: node
+   - Arguments: ["/path/to/render-mcp/bin/render-mcp.js", "start"]
 
 5. You can now use the Render commands in your AI assistant
 
@@ -110,7 +117,7 @@ For custom applications using Claude's API directly:
 
 1. Ensure the render-mcp server is running:
    ```bash
-   render-mcp start
+   node bin/render-mcp.js start
    ```
 
 2. In your application, when sending messages to Claude via the API, include the MCP server connections in your request:
@@ -122,8 +129,8 @@ For custom applications using Claude's API directly:
          "name": "render",
          "transport": {
            "type": "stdio",
-           "command": "render-mcp",
-           "args": ["start"]
+           "command": "node",
+           "args": ["/path/to/render-mcp/bin/render-mcp.js", "start"]
          }
        }
      ]
