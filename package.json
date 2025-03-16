@@ -1,6 +1,6 @@
 {
   "name": "@niyogi/render-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Render.com MCP server for AI assistants",
   "main": "dist/index.js",
   "type": "module",
