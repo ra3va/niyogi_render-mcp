@@ -300,15 +300,35 @@ async function handleDeployService(renderClient: RenderClient, params: any) {
  */
 async function handleCreateService(renderClient: RenderClient, params: any) {
   const service = await renderClient.createService(params);
-  
-  return {
-    content: [
-      {
-        type: 'text',
-        text: JSON.stringify(service, null, 2),
-      },
-    ],
-  };
+
+  // Check if the service object and its key properties are valid
+  if (service && service.id && service.url) {
+    const successResponse = {
+      message: "Service created successfully",
+      serviceId: service.id,
+      url: service.url,
+    };
+    return {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify(successResponse, null, 2),
+        },
+      ],
+    };
+  } else {
+    // Handle cases where the service object is not as expected
+    console.error('Failed to create service or service object is malformed:', service);
+    return {
+      content: [
+        {
+          type: 'text',
+          text: 'Error: Failed to create service or the response was malformed.',
+        },
+      ],
+      isError: true,
+    };
+  }
 }
 
 /**
